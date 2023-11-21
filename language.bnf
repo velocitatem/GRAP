@@ -1,0 +1,5 @@
+// The root of the program, which can contain multiple commands
+<program> ::= <command>*
+
+// A command that prints 'world' when executed
+<command> ::= "hello;"
