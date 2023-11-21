@@ -6,17 +6,14 @@
 #include <string.h>
 
 int main() {
-    const char* source = "hello\nworld";
+    const char* source = "hello world 1299223";
     Lexer *lex = initLexer(source);
 
     Token  token;
     do {
-        printf("Token: %s\n", token.value);
         token = nextToken(lex);
         // Process the token, like printing it
-        printf("Token: %s\n", token.value);
-        printf("Lexer: %d\n", *lex->current);
-    } while (token.isCoreToken && token.coreToken != TOKEN_EOF);
+    } while (token.coreToken != TOKEN_EOF);
 
     // Free token values and perform any necessary cleanup
     return 0;

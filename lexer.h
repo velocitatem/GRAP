@@ -95,8 +95,6 @@ static Token* makeToken(Lexer* lexer, bool isCoreToken, CoreTokens coreToken, Cu
 
 Token nextToken(Lexer* lexer) {
 
-    skipWhitespace(lexer);
-    printf("lexer->current: %c\n", *lexer->current);
 
     lexer->start = lexer->current;
 
@@ -104,7 +102,6 @@ Token nextToken(Lexer* lexer) {
 
     char c = advance(lexer);
 
-    printf("c: %c\n", c);
     // Handle different characters and token types
     switch (c) {
         // Add cases for different characters
@@ -113,21 +110,28 @@ Token nextToken(Lexer* lexer) {
             if (strncmp(lexer->current, "ello", 4) == 0) {
                 lexer->current += 5; // Move past "ello;"
                 // TODO Fix whitespaces and newlines - I added a +1 to the 4 because we gotta skip "hello " to get to "w"
-                printf("lexer->current: %c\n", *lexer->current);
                 return *makeToken(lexer, false, TOKEN_HELLO_COMMAND, TOKEN_HELLO_COMMAND);
             }
-            break;
+           break;
 
         // Add cases for different characters
         case 'w':
             if (strncmp(lexer->current, "orld", 4) == 0) {
-                lexer->current += 4; // Move past "orld"
+                lexer->current += 5; // Move past "orld"
+                // print the int after "world"
+                int sum =0;
+                while (isdigit(*lexer->current)) {
+                    char int_value = *lexer->current - '0';
+                    sum = sum + int_value;
+                    lexer->current++;
+                }
+                printf("%d", sum);
                 return *makeToken(lexer, false, TOKEN_HELLO_WORLD, TOKEN_HELLO_WORLD);
             }
             break;
         default:
             return *makeToken(lexer, true, TOKEN_IDENTIFIER, TOKEN_IDENTIFIER);
-
+            break;
 
     }
 
