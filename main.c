@@ -1,7 +1,7 @@
 //
 // Created by velocitatem on 11/21/23.
 //
-#include <lexer.h>
+#include "lexer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -29,6 +29,9 @@ int main(int argc, char** argv) {
         source = line;
     }
     fclose(fp);
+
+int main() {
+    const char* source = "wtest world 1299223";
 
     Lexer *lex = initLexer(source);
 

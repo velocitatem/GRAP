@@ -26,6 +26,7 @@ typedef enum CoreTokens {
 typedef enum CustomTokens {
     TOKEN_HELLO_COMMAND,
     TOKEN_HELLO_WORLD,
+    TOKEN_TEST_FUNCTION
 } CustomTokens;
 
 typedef struct Token {
