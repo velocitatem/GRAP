@@ -16,8 +16,8 @@ typedef struct {
     int line;            // Current line number
 } Lexer;
 
-#include "lexer.h"
-#include "tokens.h"
+#include <lexer.h>
+#include <tokens.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -74,13 +74,6 @@ void skipWhitespace(Lexer* lexer) {
         }
     }
 }
-void skipString(Lexer* lexer) {
-    for (;;) {
-        char c = advance(lexer);
-        if (c == ' ' || c == '\r' || c == '\t' || c == '\n') break;
-    }
-    skipWhitespace(lexer);
-}
 
 
 static Token* makeToken(Lexer* lexer, bool isCoreToken, CoreTokens coreToken, CustomTokens customToken) {
@@ -102,55 +95,57 @@ static Token* makeToken(Lexer* lexer, bool isCoreToken, CoreTokens coreToken, Cu
 
 Token nextToken(Lexer* lexer) {
 
+    skipWhitespace(lexer);
+
     lexer->start = lexer->current;
 
     if (isAtEnd(lexer)) return *makeToken(lexer, true, TOKEN_EOF, TOKEN_EOF);
 
-    skipWhitespace(lexer);
     char c = advance(lexer);
 
-    Token t = {false, 0, "BIPPIS"};
     // Handle different characters and token types
     switch (c) {
         // Add cases for different characters
         // Example for 'hello;'
-        case 'h':
-            if (strncmp(lexer->current, "ello", 4) == 0) {
-                skipString(lexer);
-                t = *makeToken(lexer, false, TOKEN_HELLO_COMMAND, TOKEN_HELLO_COMMAND);
-            }
-           break;
-        case 't':
-            if (strncmp(lexer->current, "est", 3) == 0) {
-                skipString(lexer);
-                printf("*TEST FUNCTION 1 CALLED*\n");
-                t = *makeToken(lexer, false, TOKEN_TEST_FUNCTION, TOKEN_TEST_FUNCTION);
+        case 'm':
+            if (strncmp(lexer->current, "em", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, false, TOKEN_MEM, TOKEN_MEM);
             }
             break;
-        // Add cases for different characters
+        case '|':
+            return *makeToken(lexer, true, TOKEN_LINK, TOKEN_LINK);
+            // Add cases for different characters
         case 'w':
             if (strncmp(lexer->current, "orld", 4) == 0) {
-                skipString(lexer);
-                // print the int after "world"
-                int sum =0;
-                while (isdigit(*lexer->current)) {
-                    char int_value = *lexer->current - '0';
-                    sum = sum + int_value;
-                    lexer->current++;
-                }
-                printf("%d", sum);
-                t = *makeToken(lexer, false, TOKEN_HELLO_WORLD, TOKEN_HELLO_WORLD);
+                lexer->current += 5; // Move past "orld"
+                return *makeToken(lexer, false, TOKEN_HELLO_WORLD, TOKEN_HELLO_WORLD);
             }
             break;
-        default:
+
+        case 's':
+            if (strncmp(lexer->current, "ave", 3) == 0) {
+                lexer->current += 3;
+                return *makeToken(lexer, false, TOKEN_SAVE, TOKEN_SAVE);
+            }
             break;
+
+       // allow for any word/string
+        case '"':
+            while (peek(lexer) != '"' && !isAtEnd(lexer)) advance(lexer);
+            if (isAtEnd(lexer)) {
+                printf("Error: Unterminated string at line %d\n", lexer->line);
+                exit(EXIT_FAILURE);
+            }
+            advance(lexer); // The closing "
+            return *makeToken(lexer, true, TOKEN_STRING, TOKEN_STRING);
+            break;
+        default:
+            return *makeToken(lexer, true, TOKEN_IDENTIFIER, TOKEN_IDENTIFIER);
+            break;
+
     }
 
-    if (strcmp(t.value, "BIPPIS") == 0){
-        t = *makeToken(lexer, true, TOKEN_IDENTIFIER, TOKEN_IDENTIFIER);
-        printf("Error: command unrecognised.\n");
-    }
-    return t;
 }
 
 

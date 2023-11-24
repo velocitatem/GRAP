@@ -1,11 +1,12 @@
 //
 // Created by velocitatem on 11/21/23.
 //
-#include "lexer.h"
+#include <lexer.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <parser.h>
 
 
 // load file thats the first argument
@@ -30,16 +31,22 @@ int main(int argc, char** argv) {
     }
     fclose(fp);
 
-int main() {
-    const char* source = "wtest world 1299223";
-
     Lexer *lex = initLexer(source);
 
     Token  token;
+    Token *tokens = malloc(sizeof(Token) * 100);
+    int tokenCount = 0;
     do {
         token = nextToken(lex);
         // Process the token, like printing it
+        printf("Token: %s\n", token.value);
+        tokens[tokenCount] = token;
+        tokenCount++;
     } while (token.coreToken != TOKEN_EOF);
+    parseTokens(lex, tokens, tokenCount);
+
+
+
 
     freeLexer(lex);
     free(line);

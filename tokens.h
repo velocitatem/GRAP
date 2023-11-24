@@ -26,6 +26,9 @@ typedef enum CoreTokens {
 typedef enum CustomTokens {
     TOKEN_HELLO_COMMAND,
     TOKEN_HELLO_WORLD,
+    TOKEN_MEM,
+    TOKEN_LINK,
+    TOKEN_SAVE,
     TOKEN_TEST_FUNCTION
 } CustomTokens;
 
