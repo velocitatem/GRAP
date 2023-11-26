@@ -115,7 +115,38 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 3;
                 return *makeToken(lexer, false, TOKEN_SAVE, TOKEN_SAVE);
             }
+            // say
+            if (strncmp(lexer->current, "ay", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, false, TOKEN_SAY, TOKEN_SAY);
+            }
             break;
+
+        case 'i': // io
+            if (strncmp(lexer->current, "o", 1) == 0) {
+                lexer->current += 1;
+                return *makeToken(lexer, false, TOKEN_IO, TOKEN_IO);
+            }
+            break;
+
+            // get
+        case 'g':
+            if (strncmp(lexer->current, "et", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, false, TOKEN_GET, TOKEN_GET);
+            }
+
+
+            // ( TOKEN_HEAD
+        case '(':
+            return *makeToken(lexer, true, TOKEN_HEAD, TOKEN_HEAD);
+            break;
+            // ) TOKEN_TAIL
+        case ')':
+            return *makeToken(lexer, true, TOKEN_TAIL, TOKEN_TAIL);
+            break;
+
+
 
             // allow for any word/string
         case '"':

@@ -31,7 +31,7 @@ void parseTokens(Lexer *lexer, Token *tokens, int tokenCount) {
                         if (tokens[i + 4].isCoreToken) {
                             printf("Command: %s %s %s\n", tokens[i].value, tokens[i + 1].value, tokens[i + 2].value);
                             printf("Command: %s %s %s\n", tokens[i + 2].value, tokens[i + 3].value, tokens[i + 4].value);
-
+                            // TODO store into a graph data structure
                             i += 5;
                         } else {
                             printf("Error: Expected identifier\n");

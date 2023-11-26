@@ -20,7 +20,9 @@ typedef enum CoreTokens {
     TOKEN_COMMENT,
     TOKEN_WHITESPACE,
     TOKEN_NEWLINE,
-    TOKEN_EOF
+    TOKEN_EOF,
+    TOKEN_HEAD,
+    TOKEN_TAIL
 } CoreTokens;
 
 typedef enum CustomTokens {
@@ -29,6 +31,9 @@ typedef enum CustomTokens {
     TOKEN_MEM,
     TOKEN_LINK,
     TOKEN_SAVE,
+    TOKEN_IO,
+    TOKEN_GET,
+    TOKEN_SAY,
     TOKEN_TEST_FUNCTION
 } CustomTokens;
 

@@ -19,15 +19,15 @@ int main(int argc, char** argv) {
     size_t len = 0;
     ssize_t read;
     char *filename = argv[1];
-    const char* source;
     fp = fopen(filename, "r");
     if (fp == NULL) {
         printf("Error: File not found\n");
         exit(EXIT_FAILURE);
     }
-    // read file line by line
+    // read all lines save full contents
+    char *source = malloc(sizeof(char) * 1000);
     while ((read = getline(&line, &len, fp)) != -1) {
-        source = line;
+        strcat(source, line);
     }
     fclose(fp);
 
