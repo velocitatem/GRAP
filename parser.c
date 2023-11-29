@@ -1,57 +1,45 @@
-#include "parser.h"
-#include "lexer.h"
-#include "tokens.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include "parser.h"
 
-bool isCoreToken(Token token, CoreTokens coreToken) {
-    return token.coreToken == coreToken;
+
+Node* createNode(NodeType type, Token token) {
+    Node* node = (Node*) malloc(sizeof(Node));
+    node->type = type;
+    node->token = token;
+    node->edges = NULL;
+    node->subgraph = NULL;
+    return node;
 }
 
-bool isCustomToken(Token token, CustomTokens customToken) {
-    return token.customToken == customToken;
+Edge* createEdge(Node* from, Node* to, Token action) {
+    Edge* edge = (Edge*) malloc(sizeof(Edge));
+    edge->from = from;
+    edge->to = to;
+    edge->action = action;
+    return edge;
 }
 
+void addEdge(Node* from, Node* to, Token action) {
+    Edge* edge = createEdge(from, to, action);
+    // Add the edge to the graph
+}
 
-void parseTokens(Lexer *lexer, Token *tokens, int tokenCount) {
-    int i = 0;
-    if (tokenCount % 5 != 0) {
-        printf("Error: Invalid number of tokens\n");
-        exit(EXIT_FAILURE);
+Node* parseTokenAsNode(Token token) {
+    if (token.isCoreToken) {
+
     }
-    while (i < tokenCount) {
-        if (tokens[i].coreToken == TOKEN_EOF) {
-            break;
-        }
-        // check if is of type CustomTokesn
-        if (!tokens[i].isCoreToken)  {
-            if (tokens[i + 1].coreToken == TOKEN_LINK) {
-                if (!tokens[i + 2].isCoreToken) {
-                    if (tokens[i + 3].coreToken == TOKEN_LINK) {
-                        if (tokens[i + 4].isCoreToken) {
-                            printf("Command: %s %s %s\n", tokens[i].value, tokens[i + 1].value, tokens[i + 2].value);
-                            printf("Command: %s %s %s\n", tokens[i + 2].value, tokens[i + 3].value, tokens[i + 4].value);
-                            // TODO store into a graph data structure
-                            i += 5;
-                        } else {
-                            printf("Error: Expected identifier\n");
-                            exit(EXIT_FAILURE);
-                        }
-                    } else {
-                        printf("Error: Expected link\n");
-                        exit(EXIT_FAILURE);
-                    }
-                } else {
-                    printf("Error: Expected identifier\n");
-                    exit(EXIT_FAILURE);
-                }
-            } else {
-                printf("Error: Expected link\n");
-                exit(EXIT_FAILURE);
-            }
-        } else {
-            printf("Error: Expected identifier\n");
-            exit(EXIT_FAILURE);
-        }
+    // For example, if token is a known module name, create a NODE_MODULE type node
+    // You'll need some logic here to decide the type based on your language's rules
+}
+
+void parseTokensIntoGraph(Token tokens[], int tokenCount) {
+    for (int i = 0; i < tokenCount; i++) {
+        Token token = tokens[i];
+        Node* node = parseTokenAsNode(token.value);
+        // Add the node to the graph
+        // You'll need a function for this
     }
+
 }

@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
         tokens[tokenCount] = token;
         tokenCount++;
     } while (token.coreToken != TOKEN_EOF);
-    parseTokens(lex, tokens, tokenCount - 1);
+    parseTokensIntoGraph(tokens, tokenCount-1);
 
 
 

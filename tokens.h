@@ -25,23 +25,27 @@ typedef enum CoreTokens {
     TOKEN_TAIL
 } CoreTokens;
 
-typedef enum CustomTokens {
-    TOKEN_HELLO_COMMAND,
-    TOKEN_HELLO_WORLD,
+
+typedef enum ModuleTokens {
     TOKEN_MEM,
+    TOKEN_IO
+} ModuleTokens;
+
+typedef enum ActionTokens {
     TOKEN_LINK,
     TOKEN_SAVE,
-    TOKEN_IO,
     TOKEN_GET,
     TOKEN_SAY,
-    TOKEN_TEST_FUNCTION
 } CustomTokens;
 
 typedef struct Token {
     bool isCoreToken;
+    bool isModuleToken;
+    bool isActionToken;
     union {
         CoreTokens coreToken;
         CustomTokens customToken;
+        ModuleTokens moduleToken;
     };
     char *value;
     int line;
