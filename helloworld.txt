@@ -1,0 +1,2 @@
+mem | save | "hello"
+io | say | ( mem | get | "hello")

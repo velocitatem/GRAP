@@ -25,6 +25,7 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
     // read all lines save full contents
+    //DO NOT USE MALLOC
     char *source = calloc(sizeof(char), 1000);
     // dont use getline, does not work
     // read with fgetc
