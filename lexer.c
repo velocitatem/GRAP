@@ -103,12 +103,6 @@ Token nextToken(Lexer* lexer) {
         case '|':
             return *makeToken(lexer, true, TOKEN_LINK, TOKEN_LINK);
             // Add cases for different characters
-        case 'w':
-            if (strncmp(lexer->current, "orld", 4) == 0) {
-                lexer->current += 5; // Move past "orld"
-                return *makeToken(lexer, false, TOKEN_HELLO_WORLD, TOKEN_HELLO_WORLD);
-            }
-            break;
 
         case 's':
             if (strncmp(lexer->current, "ave", 3) == 0) {

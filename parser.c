@@ -37,7 +37,7 @@ Node* parseTokenAsNode(Token token) {
 void parseTokensIntoGraph(Token tokens[], int tokenCount) {
     for (int i = 0; i < tokenCount; i++) {
         Token token = tokens[i];
-        Node* node = parseTokenAsNode(token.value);
+        Node* node = parseTokenAsNode(token);
         // Add the node to the graph
         // You'll need a function for this
     }

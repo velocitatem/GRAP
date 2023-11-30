@@ -26,10 +26,16 @@ int main(int argc, char** argv) {
     }
     // read all lines save full contents
     char *source = malloc(sizeof(char) * 1000);
-    while ((read = getline(&line, &len, fp)) != -1) {
-        strcat(source, line);
+    // dont use getline, does not work
+    // read with fgetc
+    int i = 0;
+    // read file char by char and save to source
+    while ((read = fgetc(fp)) != EOF) {
+        source[i] = read;
+        i++;
     }
-    fclose(fp);
+
+
 
     Lexer *lex = initLexer(source);
 
