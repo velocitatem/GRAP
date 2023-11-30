@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
         exit(EXIT_FAILURE);
     }
     // read all lines save full contents
-    char *source = malloc(sizeof(char) * 1000);
+    char *source = calloc(sizeof(char), 1000);
     // dont use getline, does not work
     // read with fgetc
     int i = 0;
@@ -34,7 +34,6 @@ int main(int argc, char** argv) {
         source[i] = read;
         i++;
     }
-
 
 
     Lexer *lex = initLexer(source);
