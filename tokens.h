@@ -29,7 +29,8 @@ typedef enum CoreTokens {
 
 typedef enum ModuleTokens {
     TOKEN_MEM,
-    TOKEN_IO
+    TOKEN_IO,
+    TOKEN_VAR,
 } ModuleTokens;
 
 typedef enum ActionTokens {

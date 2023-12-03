@@ -7,23 +7,47 @@
 #include "lexer.h"
 #include "graph.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-typedef struct Memmory {
-    char *key;
-    char *value;
-} Memmory;
-
-int memmorySize = 100;
-Memmory *memmory;
 
 void handleCore(Node *root);
 void handleModule(Node *root);
 void handleAction(Node *root);
 
+// ------------------ MEMORY ------------------
+#define MAX_MEMORY 100
 
-void initMemmory() {
-    memmory = malloc(memmorySize * sizeof(Memmory));
+typedef struct {
+    char* variableName;
+    char* variableValue;
+} Memory;
+
+Memory memory[MAX_MEMORY];
+int memoryIndex = 0;
+
+void setMemory(char* variableName, char* variableValue) {
+    if(memoryIndex >= MAX_MEMORY) {
+        printf("Memory is full.\n");
+        return;
+    }
+    memory[memoryIndex].variableName = variableName;
+    memory[memoryIndex].variableValue = variableValue;
+    memoryIndex++;
 }
+
+char* getMemory(char* variableName) {
+    for(int i = 0; i < memoryIndex; i++) {
+        if(strcmp(memory[i].variableName, variableName) == 0) {
+            return memory[i].variableValue;
+        }
+    }
+    return NULL;
+}
+
+// ------------------ MEMORY ------------------
+
+
 
 void handleCore(Node *root) {
     switch (root->token.coreToken) {
@@ -56,9 +80,20 @@ void handleModule(Node *root) {
         case TOKEN_MEM:
             for (int i = 0; i < root->edgeCount; i++) {
                 Edge edge = root->edges[i];
-                Node *child = edge.to;
                 if (edge.action.actionToken == TOKEN_SAVE) {
-                    // TODO save to memmory
+                    // todo wrap in try
+                    Node *child = edge.to;
+                    Edge var = child->edges[0].to->edges[0];
+                    char *varname = var.action.value;
+                    char *varvalue = var.to->token.value;
+                    setMemory(varname, varvalue);
+                }
+                if (edge.action.actionToken == TOKEN_GET) {
+                    // simple param extraction as in IO
+                    Node *child = edge.to;
+                    char *varname = child->token.value;
+                    char *varvalue = getMemory(varname);
+                    printf("\t%s = %s\n", varname, varvalue);
                 }
             }
         default:

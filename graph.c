@@ -60,5 +60,5 @@ void levelTraversal(Node* root, int level) {
 }
 
 void printGraph(Node* root) {
-    //levelTraversal(root, 0);
+    levelTraversal(root, 0);
 }

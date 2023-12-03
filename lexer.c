@@ -123,7 +123,12 @@ Token nextToken(Lexer* lexer) {
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_SAY, TOKEN_SAY);
             }
             break;
-
+        case 'v':
+            if (strncmp(lexer->current, "ar", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_VAR, TOKEN_VAR);
+            }
+            break;
         case 'i': // io
             if (strncmp(lexer->current, "o", 1) == 0) {
                 lexer->current += 1;

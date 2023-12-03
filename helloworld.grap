@@ -1,0 +1,7 @@
+mem | save | ( var | "pi"    | "3.14"  )
+mem | save | ( var | "greet" | "hello" )
+io 	| say  | "PI is equal to:"
+mem | get  | "pi"
+io  | say  | "A greeting is:"
+mem | get  | "greet"
+io  | say  | "That is it for today! Goodbye!"

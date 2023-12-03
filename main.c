@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
         tokenCount++;
     } while (token.coreToken != TOKEN_EOF);
     Node *rt =parseTokensIntoGraph(tokens, tokenCount-1);
-    printGraph(rt);
+    //printGraph(rt);
     interpretGraph(rt);
     free(tokens);
     freeLexer(lex);
