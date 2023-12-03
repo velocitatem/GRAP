@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "parser.h"
 
 
 Node* createNode(NodeType type, Token token) {
@@ -27,16 +26,39 @@ Edge* createEdge(Node* from, Node* to, Token action) {
 }
 
 void addEdge(Node* from, Node* to, Token action) {
+    // print edge
+    //printf("%s -[%s]-> %s\n", from->token.value, action.value, to->token.value);
     Edge* edge = createEdge(from, to, action);
-    int i = numEdges(from);
-    from->edges = realloc(to->edges, sizeof(from->edges) + sizeof(struct Edge));
-    from->edges[i] = *edge;
+    from->edges = realloc(from->edges, (from->edgeCount + 1) * sizeof(Edge));
+    from->edges[from->edgeCount] = *edge;
+    from->edgeCount++;
 }
 
 int numEdges(Node* node){
-    int i = 0;
-    while(node->edges != NULL){
-        i ++;
+    return node->edgeCount;
+}
+
+void levelTraversal(Node* root, int level) {
+    // visually print graph
+    // use indentation to show level
+    // print root
+    printf("%s\n", root->token.value);
+    // print edges
+    for (int i = 0; i < root->edgeCount; i++) {
+        // print indentation
+        for (int j = 0; j < level; j++) {
+            printf("  ");
+        }
+        // print edge
+        printf("-> %s\n", root->edges[i].to->token.value);
+        // print subgraph
+        if (root->edges[i].to->subgraph != NULL) {
+            levelTraversal(root->edges[i].to->subgraph, level + 1);
+        }
     }
-    return i;
+
+}
+
+void printGraph(Node* root) {
+    //levelTraversal(root, 0);
 }

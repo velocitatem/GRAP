@@ -21,8 +21,10 @@ typedef struct Node {
     NodeType type;
     Token token;
     struct Edge* edges; // Edges to other nodes
+    int edgeCount; // Number of edges
     struct Node* subgraph; // Points to a subgraph if this node is of type NODE_SUBGRAPH
 } Node;
+
 
 typedef struct Edge {
     struct Node* from;
@@ -35,5 +37,6 @@ Edge *createEdge(Node *from, Node *to, Token action);
 Node *createNode(NodeType type, Token token);
 void addEdge(Node *from, Node *to, Token action);
 int numEdges(Node *node);
+void printGraph(Node *root);
 
 #endif //PROGRAMMING_LANGUAGE_IN_C_GRAPH_H

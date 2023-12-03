@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <parser.h>
+#include <graph.h>
+#include <interpreter.h>
 
 
 // load file thats the first argument
@@ -45,15 +47,14 @@ int main(int argc, char** argv) {
     do {
         token = nextToken(lex);
         // Process the token, like printing it
-        printf("Token: %s\n", token.value);
+        //printf("Token: %s\n", token.value);
         tokens[tokenCount] = token;
         tokenCount++;
     } while (token.coreToken != TOKEN_EOF);
-    parseTokensIntoGraph(tokens, tokenCount-1);
-
-
-
-
+    Node *rt =parseTokensIntoGraph(tokens, tokenCount-1);
+    printGraph(rt);
+    interpretGraph(rt);
+    free(tokens);
     freeLexer(lex);
     free(line);
     // Free token values and perform any necessary cleanup

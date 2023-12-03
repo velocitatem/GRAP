@@ -63,13 +63,21 @@ void skipWhitespace(Lexer* lexer) {
 }
 
 
-static Token* makeToken(Lexer* lexer, bool isCoreToken, CoreTokens coreToken, CustomTokens customToken) {
+static Token* makeToken(Lexer* lexer, TokenType tokenType, CoreTokens coreToken, ActionTokens customToken) {
     Token* token = malloc(sizeof(Token));
-    token->isCoreToken = isCoreToken;
-    if (isCoreToken) {
-        token->coreToken = coreToken;
-    } else {
-        token->customToken = customToken;
+    token->type = tokenType;
+    switch (tokenType) {
+        case TOKEN_CORE:
+            token->coreToken = coreToken;
+            break;
+        case TOKEN_ACTION:
+            token->actionToken = customToken;
+            break;
+        case TOKEN_MODULE:
+            token->moduleToken = customToken;
+            break;
+        default:
+            break;
     }
 
     token->value = malloc(sizeof(char) * (lexer->current - lexer->start + 1));
@@ -86,7 +94,7 @@ Token nextToken(Lexer* lexer) {
 
     lexer->start = lexer->current;
 
-    if (isAtEnd(lexer)) return *makeToken(lexer, true, TOKEN_EOF, TOKEN_EOF);
+    if (isAtEnd(lexer)) return *makeToken(lexer, TOKEN_CORE, TOKEN_EOF, TOKEN_EOF);
 
     char c = advance(lexer);
 
@@ -97,29 +105,29 @@ Token nextToken(Lexer* lexer) {
         case 'm':
             if (strncmp(lexer->current, "em", 2) == 0) {
                 lexer->current += 2;
-                return *makeToken(lexer, false, TOKEN_MEM, TOKEN_MEM);
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_MEM, TOKEN_MEM);
             }
             break;
         case '|':
-            return *makeToken(lexer, true, TOKEN_LINK, TOKEN_LINK);
+            return *makeToken(lexer, TOKEN_CORE, TOKEN_LINK, TOKEN_LINK);
             // Add cases for different characters
 
         case 's':
             if (strncmp(lexer->current, "ave", 3) == 0) {
                 lexer->current += 3;
-                return *makeToken(lexer, false, TOKEN_SAVE, TOKEN_SAVE);
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_SAVE, TOKEN_SAVE);
             }
             // say
             if (strncmp(lexer->current, "ay", 2) == 0) {
                 lexer->current += 2;
-                return *makeToken(lexer, false, TOKEN_SAY, TOKEN_SAY);
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_SAY, TOKEN_SAY);
             }
             break;
 
         case 'i': // io
             if (strncmp(lexer->current, "o", 1) == 0) {
                 lexer->current += 1;
-                return *makeToken(lexer, false, TOKEN_IO, TOKEN_IO);
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_IO, TOKEN_IO);
             }
             break;
 
@@ -127,17 +135,17 @@ Token nextToken(Lexer* lexer) {
         case 'g':
             if (strncmp(lexer->current, "et", 2) == 0) {
                 lexer->current += 2;
-                return *makeToken(lexer, false, TOKEN_GET, TOKEN_GET);
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_GET, TOKEN_GET);
             }
 
 
             // ( TOKEN_HEAD
         case '(':
-            return *makeToken(lexer, true, TOKEN_HEAD, TOKEN_HEAD);
+            return *makeToken(lexer, TOKEN_CORE, TOKEN_HEAD, TOKEN_HEAD);
             break;
             // ) TOKEN_TAIL
         case ')':
-            return *makeToken(lexer, true, TOKEN_TAIL, TOKEN_TAIL);
+            return *makeToken(lexer, TOKEN_CORE, TOKEN_TAIL, TOKEN_TAIL);
             break;
 
 
@@ -150,10 +158,10 @@ Token nextToken(Lexer* lexer) {
                 exit(EXIT_FAILURE);
             }
             advance(lexer); // The closing "
-            return *makeToken(lexer, true, TOKEN_STRING, TOKEN_STRING);
+            return *makeToken(lexer, TOKEN_CORE, TOKEN_STRING, TOKEN_STRING);
             break;
         default:
-            return *makeToken(lexer, true, TOKEN_IDENTIFIER, TOKEN_IDENTIFIER);
+            return *makeToken(lexer, TOKEN_CORE, TOKEN_IDENTIFIER, TOKEN_IDENTIFIER);
             break;
 
     }

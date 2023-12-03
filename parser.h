@@ -6,7 +6,7 @@
 #include "graph.h"
 
 
-void parseTokensIntoGraph(Token tokens[], int tokenCount);
+Node * parseTokensIntoGraph(Token tokens[], int tokenCount);
 Node *parseTokenAsNode(Token token);
 
 

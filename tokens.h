@@ -22,7 +22,8 @@ typedef enum CoreTokens {
     TOKEN_NEWLINE,
     TOKEN_EOF,
     TOKEN_HEAD,
-    TOKEN_TAIL
+    TOKEN_TAIL,
+    TOKEN_MAIN
 } CoreTokens;
 
 
@@ -36,15 +37,19 @@ typedef enum ActionTokens {
     TOKEN_SAVE,
     TOKEN_GET,
     TOKEN_SAY,
-} CustomTokens;
+} ActionTokens;
+
+typedef enum TokenType {
+    TOKEN_CORE,
+    TOKEN_MODULE,
+    TOKEN_ACTION
+} TokenType;
 
 typedef struct Token {
-    bool isCoreToken;
-    bool isModuleToken;
-    bool isActionToken;
+    TokenType type;
     union {
         CoreTokens coreToken;
-        CustomTokens customToken;
+        ActionTokens actionToken;
         ModuleTokens moduleToken;
     };
     char *value;
