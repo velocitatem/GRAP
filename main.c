@@ -49,15 +49,17 @@ int main(int argc, char** argv) {
     Token  token;
     Token *tokens = malloc(sizeof(Token) * 100);
     int tokenCount = 0;
+    bool debugTokens = false;
     do {
         token = nextToken(lex);
         // Process the token, like printing it
-        //printf("Token: %s\n", token.value);
+        debugTokens && printf("Token: %s\n", token.value);
         tokens[tokenCount] = token;
         tokenCount++;
     } while (token.coreToken != TOKEN_EOF);
     Node *rt =parseTokensIntoGraph(tokens, tokenCount-1);
     //printGraph(rt);
+    exportGraph(rt);
     interpretGraph(rt);
     free(tokens);
     freeLexer(lex);

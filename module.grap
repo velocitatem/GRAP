@@ -1,4 +1,18 @@
-module | declare | @say_hello
-    module | export | (io | say | "Hello, World!")
-    module | export | (io | say | "I am a module!")
-@say_hello | call | ()
+module | declare | @sayhello
+module | export | (
+    mem | save | (
+        var | "pi" | "3.14338"
+        )
+    )
+module | export | (
+        io | say | "This is inside the function"
+    )
+module | export | (
+    io | say | (
+        mem | get | "pi"
+        )
+    )
+
+io | say | "This is a regular call"
+
+@sayhello | call | ()

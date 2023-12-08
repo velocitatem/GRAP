@@ -103,13 +103,13 @@ Token nextToken(Lexer* lexer) {
         // Add cases for different characters
         // Example for 'hello;'
         case 'm':
+            if (strncmp(lexer->current, "odule", 5) == 0) {
+                lexer->current += 5;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_CUSTOM_MODULE, TOKEN_CUSTOM_MODULE);
+            }
             if (strncmp(lexer->current, "em", 2) == 0) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_MODULE, TOKEN_MEM, TOKEN_MEM);
-            }
-            if (strncmp(lexer->current, "odule", 5) == 0) {
-                lexer->current += 3;
-                return *makeToken(lexer, TOKEN_MODULE, TOKEN_CUSTOM_MODULE, TOKEN_CUSTOM_MODULE);
             }
             break;
         case '|':
@@ -146,6 +146,32 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_GET, TOKEN_GET);
             }
+            break;
+
+        case 'd':
+            if (strncmp(lexer->current, "eclare", 6) == 0) {
+                lexer->current += 6;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_DECLARE, TOKEN_DECLARE);
+            }
+            break;
+        case 'e':
+            if (strncmp(lexer->current, "xport", 5) == 0) {
+                lexer->current += 5;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_EXPORT, TOKEN_EXPORT);
+            }
+            break;
+        case 'c':
+            if (strncmp(lexer->current, "all", 3) == 0) {
+                lexer->current += 3;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_CALL, TOKEN_CALL);
+            }
+            break;
+
+        // -------------- CORE TOKENS ----------------
+
+        case '\@':
+            while (isalnum(peek(lexer)) && !isAtEnd(lexer)) advance(lexer);
+            return *makeToken(lexer, TOKEN_CORE, TOKEN_CUSTOM_MODULE_NAME, TOKEN_CUSTOM_MODULE_NAME);
             break;
 
 

@@ -14,6 +14,7 @@ Node* createNode(NodeType type, Token token) {
     node->token = token;
     node->edges = NULL;
     node->subgraph = NULL;
+    node->edgeCount = 0;
     return node;
 }
 
@@ -26,10 +27,16 @@ Edge* createEdge(Node* from, Node* to, Token action) {
 }
 
 void addEdge(Node* from, Node* to, Token action) {
-    // print edge
-    //printf("%s -[%s]-> %s\n", from->token.value, action.value, to->token.value);
+    // append to graph.graph file the edge just txt: from,to,action
+    FILE *file = fopen("graph.txt", "a");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+    fprintf(file, "%s,link,%s\n", from->token.value, to->token.value);
+    fclose(file);
     Edge* edge = createEdge(from, to, action);
-    from->edges = realloc(from->edges, (from->edgeCount + 1) * sizeof(Edge));
+    from->edges = realloc(from->edges, (from->edgeCount + 1) * sizeof(Edge) + sizeof(edge));
     from->edges[from->edgeCount] = *edge;
     from->edgeCount++;
 }
@@ -57,6 +64,26 @@ void levelTraversal(Node* root, int level) {
         }
     }
 
+}
+
+void exportNode(Node* node, FILE* file) {
+    for (int i = 0; i < node->edgeCount; i++) {
+        fprintf(file, "%s,link,%s\n", node->token.value, node->edges[i].to->token.value);
+        if (node->edges[i].to->subgraph != NULL) {
+            exportNode(node->edges[i].to->subgraph, file);
+        }
+    }
+}
+void exportGraph(Node* root) {
+    FILE *file = fopen("graph.txt", "w");
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    exportNode(root, file);
+
+    fclose(file);
 }
 
 void printGraph(Node* root) {

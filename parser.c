@@ -50,13 +50,26 @@ Node * parseTokensIntoGraph(Token tokens[], int tokenCount) {
         Node *subGraph = NULL;
         if (param.type == TOKEN_CORE && param.coreToken == TOKEN_HEAD) {
             // user opened sub-graph by (module | action | core)
-            // find the end of the sub-graph
+            // core could be another sub-graph (module | action | ( module | action | core))
+            // find the end of the sub-graph, encapsulating other sub graphs
             int subGraphStart = i+4;
             int subGraphEnd = subGraphStart;
+            int openSubSubGraphs = 0;
             for (int j = subGraphStart; j < tokenCount; j++) {
+                if (tokens[j].type == TOKEN_CORE && tokens[j].coreToken == TOKEN_HEAD) {
+                    openSubSubGraphs++;
+                }
                 if (tokens[j].type == TOKEN_CORE && tokens[j].coreToken == TOKEN_TAIL) {
-                    subGraphEnd = j;
-                    break;
+                    if (openSubSubGraphs == 0) {
+                        subGraphEnd = j;
+                        break;
+                    } else {
+                        openSubSubGraphs--;
+                        if (openSubSubGraphs == 0) {
+                            subGraphEnd = j;
+                            break;
+                        }
+                    }
                 }
             }
             // first token and last token:
@@ -72,7 +85,8 @@ Node * parseTokensIntoGraph(Token tokens[], int tokenCount) {
             // add sub-graph to root
             // skip to end of sub-graph
             isSubGraph = true;
-            i = subGraphEnd+1-5;
+            // re-shift because of sub-graph but wathc for +=5 in the loop
+            i = subGraphEnd - 4;
         }
         Node* a = parseTokenAsNode(module);
         Node* b;

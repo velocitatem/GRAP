@@ -38,5 +38,6 @@ Node *createNode(NodeType type, Token token);
 void addEdge(Node *from, Node *to, Token action);
 int numEdges(Node *node);
 void printGraph(Node *root);
+void exportGraph(Node *root);
 
 #endif //PROGRAMMING_LANGUAGE_IN_C_GRAPH_H
