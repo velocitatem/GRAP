@@ -107,6 +107,10 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_MODULE, TOKEN_MEM, TOKEN_MEM);
             }
+            if (strncmp(lexer->current, "odule", 5) == 0) {
+                lexer->current += 3;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_CUSTOM_MODULE, TOKEN_CUSTOM_MODULE);
+            }
             break;
         case '|':
             return *makeToken(lexer, TOKEN_CORE, TOKEN_LINK, TOKEN_LINK);
@@ -142,6 +146,7 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_GET, TOKEN_GET);
             }
+            break;
 
 
             // ( TOKEN_HEAD
@@ -152,7 +157,6 @@ Token nextToken(Lexer* lexer) {
         case ')':
             return *makeToken(lexer, TOKEN_CORE, TOKEN_TAIL, TOKEN_TAIL);
             break;
-
 
 
             // allow for any word/string

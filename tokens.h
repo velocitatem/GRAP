@@ -23,7 +23,7 @@ typedef enum CoreTokens {
     TOKEN_EOF,
     TOKEN_HEAD,
     TOKEN_TAIL,
-    TOKEN_MAIN
+    TOKEN_MAIN,
 } CoreTokens;
 
 
@@ -31,6 +31,7 @@ typedef enum ModuleTokens {
     TOKEN_MEM,
     TOKEN_IO,
     TOKEN_VAR,
+    TOKEN_CUSTOM_MODULE,
 } ModuleTokens;
 
 typedef enum ActionTokens {

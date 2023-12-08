@@ -11,6 +11,6 @@
 #include "graph.h"
 #include "parser.h"
 
-void interpretGraph(Node *root);
+char * interpretGraph(Node *root);
 
 #endif //PROGRAMMING_LANGUAGE_IN_C_INTERPRETER_H

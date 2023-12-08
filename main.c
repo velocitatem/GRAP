@@ -9,12 +9,17 @@
 #include <parser.h>
 #include <graph.h>
 #include <interpreter.h>
-
+#include "cli.h"
 
 // load file thats the first argument
 // if no argument, load from stdin
 int main(int argc, char** argv) {
 
+    // if we have no arguments, load from stdin
+    if (argc == 1) {
+        handleCLI(argc, argv);
+        return 0;
+    }
     // chekc if file is in .rem extension
     FILE *fp;
     char *line = NULL;

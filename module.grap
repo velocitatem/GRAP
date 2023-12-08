@@ -1,0 +1,4 @@
+module | declare | @say_hello
+    module | export | (io | say | "Hello, World!")
+    module | export | (io | say | "I am a module!")
+@say_hello | call | ()

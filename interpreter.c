@@ -11,8 +11,8 @@
 #include <string.h>
 
 
-void handleCore(Node *root);
-void handleModule(Node *root);
+char * handleCore(Node *root);
+char * handleModule(Node *root);
 void handleAction(Node *root);
 
 // ------------------ MEMORY ------------------
@@ -49,31 +49,40 @@ char* getMemory(char* variableName) {
 
 
 
-void handleCore(Node *root) {
+char* handleCore(Node *root) {
+    char* result = NULL;
     switch (root->token.coreToken) {
         case TOKEN_MAIN:
             for (int i = 0; i < root->edgeCount; i++) {
-                // maybe sort by module types
                 Node *child = root->edges[i].to;
-                handleModule(child);
+                result = handleModule(child);
             }
             break;
-
         default:
             printf("UNKNOWN CORE\n");
             break;
     }
+    return result;
 }
 
-void handleModule(Node *root) {
+
+char* handleModule(Node *root) {
     // go through edges
     switch (root->token.moduleToken) {
         case TOKEN_IO:
             for (int i = 0; i < root->edgeCount; i++) {
                 Edge edge = root->edges[i];
                 Node *child = edge.to;
+                // handle cases when we have a subgraph
+                if (child->token.type == TOKEN_CORE && child->token.coreToken == TOKEN_MAIN) {
+                    char *subgraphResult = interpretGraph(child);
+                    if (subgraphResult != NULL) {
+                        printf("%s\n", subgraphResult);
+                    }
+                    break;
+                }
                 if (edge.action.actionToken == TOKEN_SAY) {
-                    printf("~ %s\n", child->token.value);
+                    printf("%s\n", child->token.value);
                 }
             }
             break;
@@ -87,13 +96,14 @@ void handleModule(Node *root) {
                     char *varname = var.action.value;
                     char *varvalue = var.to->token.value;
                     setMemory(varname, varvalue);
+                    return NULL;
                 }
                 if (edge.action.actionToken == TOKEN_GET) {
                     // simple param extraction as in IO
                     Node *child = edge.to;
                     char *varname = child->token.value;
                     char *varvalue = getMemory(varname);
-                    printf("\t%s = %s\n", varname, varvalue);
+                    return varvalue;
                 }
             }
         default:
@@ -101,21 +111,18 @@ void handleModule(Node *root) {
     }
 }
 
-
-void interpretGraph(Node *root) {
-    if (root == NULL) {
-        return;
-    }
-    switch (root->token.type) { // CORE, MODULE, ACTION, ARGUMENT, SUBGRAPH
-        case TOKEN_CORE:
-            handleCore(root);
+char * interpretGraph(Node *root) {
+    // go through edges
+    switch (root->type) {
+        case NODE_CORE:
+            return handleCore(root);
             break;
-        case TOKEN_MODULE:
-            break;
-        case TOKEN_ACTION:
+        case NODE_MODULE:
+            return handleModule(root);
+        case NODE_ACTION:
             break;
         default:
             break;
-
     }
+    return NULL;
 }
