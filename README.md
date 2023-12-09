@@ -31,6 +31,41 @@ To get started with Graph, you'll need to clone the repository and build the int
 ## 📚 Documentation
 For more detailed information about the language, including its syntax and built-in functions, please refer to the `DOCS.md` file.
 
+### More Examples
+
+```grap
+module | declare | @sayhello
+module | export | (
+    mem | save | (
+        var | "pi" | "3.14338"
+        )
+    )
+module | export | (
+        io | say | "This is inside the function"
+    )
+module | export | (
+    io | say | (
+        mem | get | "pi"
+        )
+    )
+
+io | say | "This is a regular call"
+
+@sayhello | call | ()
+```
+
+Would look something like this in the interpreter:
+![moduleimage](./demos/module.png)
+
+And would output this as a result:
+> This is a regular call 
+> 
+> This is inside the function
+> 
+> 3.14338
+
+
+
 ## 🤝 Contributing
 We welcome contributions from the community. If you're interested in contributing, please see the `CONTRIBUTING.md` file for guidelines.
 
