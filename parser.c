@@ -5,11 +5,16 @@
 #include "tokens.h"
 
 
-Node* parseTokenAsNode(Token token) {
+Node*
+parseTokenAsNode
+(Token token)
+{
     NodeType t;
 
     //TODO: better node type assignment
-    switch ( token.type) {
+    switch
+    ( token.type)
+    {
         case TOKEN_CORE:
             t = NODE_CORE;
             break;
@@ -28,44 +33,66 @@ Node* parseTokenAsNode(Token token) {
     return createNode(t, token);
 }
 
-Node * parseTokensIntoGraph(Token tokens[], int tokenCount) {
+Node *
+parseTokensIntoGraph
+(Token tokens[], int tokenCount)
+{
     // create new token
     Token * rootToken = malloc(sizeof(Token));
-        rootToken->value = "root";
-        rootToken->type = TOKEN_CORE;
-        rootToken->coreToken = TOKEN_MAIN;
+    rootToken->value = "root";
+    rootToken->type = TOKEN_CORE;
+    rootToken->coreToken = TOKEN_MAIN;
 
 
     Token *mainLinker = malloc(sizeof(Token));
-        mainLinker->value = "linker";
-        mainLinker->type = TOKEN_ACTION;
-        mainLinker->actionToken= TOKEN_LINK;
+    mainLinker->value = "linker";
+    mainLinker->type = TOKEN_ACTION;
+    mainLinker->actionToken= TOKEN_LINK;
 
     Node *root = createNode(NODE_CORE, *rootToken);
-    for (int i = 0; i < tokenCount; i+=5) {
+    for
+    (int i = 0; i < tokenCount; i+=5)
+    {
         Token module = tokens[i];
         Token action = tokens[i+2];
         Token param = tokens[i+4];
         bool isSubGraph = false;
         Node *subGraph = NULL;
-        if (param.type == TOKEN_CORE && param.coreToken == TOKEN_HEAD) {
+        if
+        (param.type == TOKEN_CORE
+        && param.coreToken == TOKEN_HEAD)
+        {
             // user opened sub-graph by (module | action | core)
             // core could be another sub-graph (module | action | ( module | action | core))
             // find the end of the sub-graph, encapsulating other sub graphs
             int subGraphStart = i+4;
             int subGraphEnd = subGraphStart;
             int openSubSubGraphs = 0;
-            for (int j = subGraphStart; j < tokenCount; j++) {
-                if (tokens[j].type == TOKEN_CORE && tokens[j].coreToken == TOKEN_HEAD) {
+            for
+            (int j = subGraphStart; j < tokenCount; j++)
+            {
+                if
+                (tokens[j].type == TOKEN_CORE
+                && tokens[j].coreToken == TOKEN_HEAD)
+                {
                     openSubSubGraphs++;
                 }
-                if (tokens[j].type == TOKEN_CORE && tokens[j].coreToken == TOKEN_TAIL) {
-                    if (openSubSubGraphs == 0) {
+                if
+                (tokens[j].type == TOKEN_CORE
+                && tokens[j].coreToken == TOKEN_TAIL)
+                {
+                    if
+                    (openSubSubGraphs == 0)
+                    {
                         subGraphEnd = j;
                         break;
-                    } else {
+                    }
+                    else
+                    {
                         openSubSubGraphs--;
-                        if (openSubSubGraphs == 0) {
+                        if
+                        (openSubSubGraphs == 0)
+                        {
                             subGraphEnd = j;
                             break;
                         }
@@ -76,7 +103,9 @@ Node * parseTokensIntoGraph(Token tokens[], int tokenCount) {
             // parse sub-graph
             Token *subGraphTokens = malloc(sizeof(Token) * (subGraphEnd - subGraphStart ));
             int k = 0;
-            for (int j = subGraphStart+1; j < subGraphEnd; j++) {
+            for
+            (int j = subGraphStart+1; j < subGraphEnd; j++)
+            {
                 subGraphTokens[k] = tokens[j];
                 k++;
             }
@@ -91,9 +120,13 @@ Node * parseTokensIntoGraph(Token tokens[], int tokenCount) {
         Node* a = parseTokenAsNode(module);
         Node* b;
         // a, b
-        if (!isSubGraph) {
+        if
+        (!isSubGraph)
+        {
             b = parseTokenAsNode(param);
-        } else {
+        }
+        else
+        {
             b = subGraph;
         }
         // print both a and b

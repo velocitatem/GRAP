@@ -33,7 +33,6 @@ void addEdge(Node* from, Node* to, Token action) {
         printf("Error opening file!\n");
         return;
     }
-    fprintf(file, "%s,link,%s\n", from->token.value, to->token.value);
     fclose(file);
     Edge* edge = createEdge(from, to, action);
     from->edges = realloc(from->edges, (from->edgeCount + 1) * sizeof(Edge) + sizeof(edge));

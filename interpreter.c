@@ -19,16 +19,22 @@ void handleAction(Node *root);
 #define MAX_MEMORY 100
 #define MAX_MODULES 100
 
-typedef struct {
+typedef struct
+{
     char* variableName;
     char* variableValue;
-} Memory;
+}
+Memory;
 
 Memory memory[MAX_MEMORY];
 int memoryIndex = 0;
 
-void setMemory(char* variableName, char* variableValue) {
-    if(memoryIndex >= MAX_MEMORY) {
+void setMemory
+(char* variableName, char* variableValue)
+{
+    if
+    (memoryIndex >= MAX_MEMORY)
+    {
         printf("Memory is full.\n");
         return;
     }
@@ -37,9 +43,19 @@ void setMemory(char* variableName, char* variableValue) {
     memoryIndex++;
 }
 
-char* getMemory(char* variableName) {
-    for(int i = 0; i < memoryIndex; i++) {
-        if(strcmp(memory[i].variableName, variableName) == 0) {
+char*
+getMemory
+(char* variableName)
+{
+    for
+    (int i = 0; i < memoryIndex; i++)
+    {
+        if
+        (
+            strcmp(memory[i].variableName, variableName)
+            == 0
+        )
+        {
             return memory[i].variableValue;
         }
     }
@@ -50,41 +66,54 @@ char* getMemory(char* variableName) {
 
 
 // ------------------ MODULES ------------------
-typedef struct {
+typedef struct
+{
     char *name;
     Node *exports;
     int exportCount;
     Token linker;
-} Module;
+}
+Module;
 
 Module *moduleRegistry[MAX_MODULES];
 int moduleRegistryCount = 0;
 
-Module *createModule(char *name) {
+Module*
+createModule
+(char *name)
+{
     Module *module = malloc(sizeof(Module));
     module->name = name;
     Token * rootToken = malloc(sizeof(Token));
-        rootToken->value = "root";
-        rootToken->type = TOKEN_CORE;
-        rootToken->coreToken= TOKEN_MAIN;
+    rootToken->value = "root";
+    rootToken->type = TOKEN_CORE;
+    rootToken->coreToken= TOKEN_MAIN;
     Node *exports = createNode(NODE_CORE, *rootToken);
     Token *mainLinker = malloc(sizeof(Token));
-        mainLinker->value = "linker";
-        mainLinker->type = TOKEN_ACTION;
-        mainLinker->actionToken= TOKEN_LINK;
+    mainLinker->value = "linker";
+    mainLinker->type = TOKEN_ACTION;
+    mainLinker->actionToken= TOKEN_LINK;
     module->exports = exports;
     module->linker = *mainLinker;
     module->exportCount = 0;
     return module;
 }
 
-void addExportToModule(Module *module, Node *export) {
+void
+addExportToModule
+(Module *module, Node *export)
+{
     module->exportCount++;
     addEdge(module->exports, export, module->linker);
 }
 
-void addModuleToRegistry(Module *module) {
-    if (moduleRegistryCount >= MAX_MODULES) {
+void
+addModuleToRegistry
+(Module *module)
+{
+    if
+    (moduleRegistryCount >= MAX_MODULES)
+    {
         printf("Module registry is full.\n");
         return;
     }
@@ -96,11 +125,18 @@ void addModuleToRegistry(Module *module) {
 
 
 
-char* handleCore(Node *root) {
+char*
+handleCore
+(Node *root)
+{
     char* result = NULL;
-    switch (root->token.coreToken) {
+    switch
+    (root->token.coreToken)
+    {
         case TOKEN_MAIN:
-            for (int i = 0; i < root->edgeCount; i++) {
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
                 Node *child = root->edges[i].to;
                 result = handleModule(child);
             }
@@ -113,30 +149,91 @@ char* handleCore(Node *root) {
 }
 
 
-char* handleModule(Node *root) {
+char*
+handleModule
+(Node *root)
+{
     // go through edges
-    switch (root->token.moduleToken) {
+    switch
+    (root->token.moduleToken)
+    {
+        case TOKEN_BITS:
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
+                Node *child = root->edges[i].to;
+                // if is a root node, then we have a subgraph
+                if
+                (child->token.type == TOKEN_CORE
+                && child->token.coreToken == TOKEN_MAIN)
+                {
+                    char *subgraphResult = interpretGraph(child);
+                    if (subgraphResult != NULL) {
+                        // turn from binary string to int
+                        // result will be something like "101010" or "101"=5
+                        int binary = 0;
+                        for
+                        (int i = 0; i < strlen(subgraphResult)-1; i++)
+                        {
+                            binary = binary << 1;
+                            if (subgraphResult[i] == '1') {
+                                binary = binary | 1;
+                            }
+                        }
+                        int result = binary;
+                        if
+                        (root->edges->action.actionToken
+                        == TOKEN_RIGHTSHIFT)
+                        {
+                            result = result >> 1;
+                        }
+                        else if
+                        (root->edges->action.actionToken
+                        == TOKEN_LEFTSHIFT)
+                        {
+                            result = result << 1;
+                        }
+                        char *resultString = malloc(sizeof(char) * 100);
+                        sprintf(resultString, "%d", result);
+                        return resultString;
+                    }
+                }
+            }
+            break;
         case TOKEN_IO:
-            for (int i = 0; i < root->edgeCount; i++) {
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
                 Edge edge = root->edges[i];
                 Node *child = edge.to;
                 // handle cases when we have a subgraph
-                if (child->token.type == TOKEN_CORE && child->token.coreToken == TOKEN_MAIN) {
+                if
+                (child->token.type == TOKEN_CORE
+                && child->token.coreToken == TOKEN_MAIN)
+                {
                     char *subgraphResult = interpretGraph(child);
-                    if (subgraphResult != NULL) {
+                    if
+                    (subgraphResult != NULL)
+                    {
                         printf("%s\n", subgraphResult);
                     }
                     break;
                 }
-                if (edge.action.actionToken == TOKEN_SAY) {
+                if
+                (edge.action.actionToken == TOKEN_SAY)
+                {
                     printf("%s\n", child->token.value);
                 }
             }
             break;
         case TOKEN_MEM:
-            for (int i = 0; i < root->edgeCount; i++) {
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
                 Edge edge = root->edges[i];
-                if (edge.action.actionToken == TOKEN_SAVE) {
+                if
+                (edge.action.actionToken == TOKEN_SAVE)
+                {
                     // todo wrap in try
                     Node *child = edge.to;
                     Edge var = child->edges[0].to->edges[0];
@@ -145,7 +242,9 @@ char* handleModule(Node *root) {
                     setMemory(varname, varvalue);
                     return NULL;
                 }
-                if (edge.action.actionToken == TOKEN_GET) {
+                if
+                (edge.action.actionToken == TOKEN_GET)
+                {
                     // simple param extraction as in IO
                     Node *child = edge.to;
                     char *varname = child->token.value;
@@ -155,17 +254,23 @@ char* handleModule(Node *root) {
             }
             break;
         case TOKEN_CUSTOM_MODULE:
-            for (int i = 0; i < root->edgeCount; i++) {
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
                 Edge edge = root->edges[i];
                 Node *child = edge.to;
                 // possible actions declare,export,call
-                if (edge.action.actionToken == TOKEN_DECLARE) {
+                if
+                (edge.action.actionToken == TOKEN_DECLARE)
+                {
                     // get the argument and add it to the module registry
                     char *export = child->token.value;
                     Module *module = createModule(export);
                     addModuleToRegistry(module);
                 }
-                if (edge.action.actionToken == TOKEN_EXPORT) {
+                if
+                (edge.action.actionToken == TOKEN_EXPORT)
+                {
                     // add an export to the last module in the registry
                     Node *export = child->edges[0].to;
                     Module *module = moduleRegistry[moduleRegistryCount - 1];
@@ -177,25 +282,34 @@ char* handleModule(Node *root) {
         case TOKEN_CUSTOM_MODULE_NAME:
             1+1;
             Edge edge = root->edges[0];
-            if (edge.action.actionToken == TOKEN_CALL) {
+            if
+            (edge.action.actionToken == TOKEN_CALL)
+            {
                 char * moduleName = root->token.value;                // find the module in the registry
                 Module *module = NULL;
-                for (int j = 0; j < moduleRegistryCount; j++) {
-                    if (strcmp(moduleRegistry[j]->name, moduleName) == 0) {
+                for
+                (int j = 0; j < moduleRegistryCount; j++)
+                {
+                    if
+                    (strcmp(moduleRegistry[j]->name, moduleName) == 0)
+                    {
                         module = moduleRegistry[j];
                         break;
                     }
                 }
-                if (module == NULL) {
+                if
+                (module == NULL)
+                {
                     printf("Module %s not found.\n", moduleName);
                     break;
                 }
                 // go through the exports and execute them
-                for (int j = 0; j < module->exportCount; j++) {
+                for
+                (int j = 0; j < module->exportCount; j++)
+                {
                     Node *export = &module->exports[j];
                     interpretGraph(export);
                 }
-
             }
             break;
         default:
@@ -203,9 +317,14 @@ char* handleModule(Node *root) {
     }
 }
 
-char * interpretGraph(Node *root) {
+char *
+interpretGraph
+(Node *root)
+{
     // go through edges
-    switch (root->type) {
+    switch
+    (root->type)
+    {
         case NODE_CORE:
             return handleCore(root);
         case NODE_MODULE:

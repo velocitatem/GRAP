@@ -138,6 +138,11 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 1;
                 return *makeToken(lexer, TOKEN_MODULE, TOKEN_IO, TOKEN_IO);
             }
+            // int
+            if (strncmp(lexer->current, "nt", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_INT, TOKEN_INT);
+            }
             break;
 
             // get
@@ -166,6 +171,26 @@ Token nextToken(Lexer* lexer) {
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_CALL, TOKEN_CALL);
             }
             break;
+
+        case 'b': // binary
+            if (strncmp(lexer->current, "in", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_BIN, TOKEN_BIN);
+            }
+            if (strncmp(lexer->current, "its", 3) == 0) {
+                lexer->current += 3;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_BITS, TOKEN_BITS);
+            }
+            break;
+
+        case '>':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_RIGHTSHIFT, TOKEN_RIGHTSHIFT);
+            break;
+        case '<':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_LEFTSHIFT, TOKEN_LEFTSHIFT);
+            break;
+
+
 
         // -------------- CORE TOKENS ----------------
 

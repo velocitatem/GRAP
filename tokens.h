@@ -31,8 +31,12 @@ typedef enum ModuleTokens {
     TOKEN_MEM,
     TOKEN_IO,
     TOKEN_VAR,
+    TOKEN_INT,
+    TOKEN_BIN,
+    TOKEN_LIST,
     TOKEN_CUSTOM_MODULE,
     TOKEN_CUSTOM_MODULE_NAME,
+    TOKEN_BITS
 } ModuleTokens;
 
 typedef enum ActionTokens {
@@ -43,6 +47,8 @@ typedef enum ActionTokens {
     TOKEN_DECLARE,
     TOKEN_EXPORT,
     TOKEN_CALL,
+    TOKEN_RIGHTSHIFT,
+    TOKEN_LEFTSHIFT,
 } ActionTokens;
 
 

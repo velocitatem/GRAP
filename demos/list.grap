@@ -1,0 +1,5 @@
+mem | set | (list | "lst" | "A")
+mem | set | (list | "lst" | "C")
+mem | set | (list | "lst" | "D")
+mem | set | (list | "lst" | "E")
+io | say | (mem | get | "lst")

@@ -1,4 +1,4 @@
-# 🌐 Graph Programming Language
+# 🌐 Grap Representation and Processing (GRAP)
 
 ## 🚀 Overview
 GRAP is a 🎉 simple, yet powerful programming language designed to make programming more intuitive and accessible. It is built using C and Python, and it allows you to write programs in a graph-like structure, making it easier to visualize the flow of data and control.
@@ -12,13 +12,14 @@ GRAP is a 🎉 simple, yet powerful programming language designed to make progra
 ## 📜 Example Code
 Here's a simple example of a Graph program:
 
-```rem
+```grap
+
 mem | save | ( var | "pi"    | "3.14"  )
 mem | save | ( var | "greet" | "hello" )
-io 	| say  | "PI is equal to:"
-mem | get  | "pi"
+io  | say  | "PI is equal to:"
+io  | say  | ( mem | get | "pi" )
 io  | say  | "A greeting is:"
-mem | get  | "greet"
+io  | say  | ( mem | get | "greet" )
 io  | say  | "That is it for today! Goodbye!"
 ```
 
@@ -40,5 +41,11 @@ Graph is licensed under the MIT license. For more information, see the `LICENSE`
 ![GitHub top language](https://img.shields.io/github/languages/top/velocitatem/programming-language-in-c)
 ![GitHub contributors](https://img.shields.io/github/contributors/velocitatem/programming-language-in-c)
 ![GitHub last commit](https://img.shields.io/github/last-commit/velocitatem/programming-language-in-c)
+![GitHub repo size](https://img.shields.io/github/repo-size/velocitatem/programming-language-in-c)
 
-Please replace `velocitatem` and `programming-language-in-c` with your GitHub username and repository name respectively to display the correct badges.
+
+### But what is GRAP?
++ GRAP: GRAP Representation and Processing
+    + GRAP: GRAP Representation and Processing
+        + GRAP: GRAP Representation and Processing
+            + ...
