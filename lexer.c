@@ -194,7 +194,7 @@ Token nextToken(Lexer* lexer) {
 
         // -------------- CORE TOKENS ----------------
 
-        case '\@':
+        case '@':
             while (isalnum(peek(lexer)) && !isAtEnd(lexer)) advance(lexer);
             return *makeToken(lexer, TOKEN_CORE, TOKEN_CUSTOM_MODULE_NAME, TOKEN_CUSTOM_MODULE_NAME);
             break;
