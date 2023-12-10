@@ -1,5 +1,6 @@
-// The root of the program, which can contain multiple commands
-<program> ::= <command>*
-
-// A command that prints 'world' when executed
-<command> ::= "hello;"
+<code> ::= <module> <sep> <action> <sep> <subgraph>
+<sep> ::= " | "
+<subgraph> ::= "arg" | <sub>
+<sub> ::= "(" <code> ")"
+<module> ::= "module"
+<action> ::= "action"
