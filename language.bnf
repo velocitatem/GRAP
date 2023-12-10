@@ -1,6 +1,8 @@
 <code> ::= <module> <sep> <action> <sep> <subgraph>
 <sep> ::= " | "
-<subgraph> ::= "arg" | <sub>
+<subgraph> ::= <word> | <sub>
 <sub> ::= "(" <code> ")"
-<module> ::= "module"
-<action> ::= "action"
+<module> ::= <word>
+<action> ::= <word>
+<word> ::= <char> | <word> <char>
+<char> ::= [a-z]
