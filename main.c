@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
     Lexer *lex = initLexer(source);
 
     Token  token;
-    Token *tokens = malloc(sizeof(Token) * 100);
+    Token *tokens = malloc(sizeof(Token) * 1000);
     int tokenCount = 0;
     bool debugTokens = false;
     do {
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
         debugTokens && printf("Token: %s\n", token.value);
         tokens[tokenCount] = token;
         tokenCount++;
-    } while (token.coreToken != TOKEN_EOF);
+    } while (token.isFinal == false);
     Node *rt =parseTokensIntoGraph(tokens, tokenCount-1);
     //printGraph(rt);
     exportGraph(rt);

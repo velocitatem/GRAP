@@ -28,6 +28,8 @@ typedef enum CoreTokens {
 
 
 typedef enum ModuleTokens {
+    TOKEN_CUSTOM_NODE,
+    TOKEN_MATH,
     TOKEN_MEM,
     TOKEN_IO,
     TOKEN_VAR,
@@ -40,6 +42,13 @@ typedef enum ModuleTokens {
 } ModuleTokens;
 
 typedef enum ActionTokens {
+    TOKEN_EVAL,
+    TOKEN_CUSTOM_ACTION,
+    TOKEN_ADDITION,
+    TOKEN_SUBTRACTION,
+    TOKEN_MULTIPLICATION,
+    TOKEN_DIVISION,
+    TOKEN_MODULUS,
     TOKEN_LINK,
     TOKEN_SAVE,
     TOKEN_GET,
@@ -68,6 +77,7 @@ typedef struct Token {
     };
     char *value;
     int line;
+    bool isFinal;
 } Token;
 
 #endif //PROGRAMMING_LANGUAGE_IN_C_TOKENS_H
