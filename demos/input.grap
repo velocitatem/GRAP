@@ -1,0 +1,3 @@
+mem | save | (var | "name" | (io | ask | "What is your name?"))
+io | say | "Your name is:"
+io | say | (mem | get | "name")
