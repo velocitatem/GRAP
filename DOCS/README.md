@@ -42,8 +42,9 @@ In this program, the `mem | save` command saves a value into memory, and the `io
 
 Grap has several built-in modules:
 
-- `mem`: Used for saving and retrieving values in memory.
-- `io`: Used for input and output operations.
+- [`io`](./io.md): Used for input and output operations.
+- [`mem`](./mem.md): Used for saving and retrieving values in memory.
+- `math`: Used for mathematical operations.
 - `bits`: Used for bitwise operations.
 
 Each module has its own set of actions and parameters.
