@@ -13,7 +13,6 @@ GRAP is a 🎉 simple, yet powerful programming language designed to make progra
 Here's a simple example of a Graph program:
 
 ```grap
-
 mem | save | ( var | "pi"    | "3.14"  )
 mem | save | ( var | "greet" | "hello" )
 io  | say  | "PI is equal to:"
