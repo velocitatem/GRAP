@@ -224,6 +224,15 @@ handleModule
                 {
                     printf("%s\n", child->token.value);
                 }
+                if
+                (edge.action.actionToken == TOKEN_ASK)
+                {
+                    printf("User input (%s): ", child->token.value);
+                    char * in = calloc(100, sizeof(char));
+                    scanf("%s", in);
+                    return in;
+                    //TODO: fix cli double ">>"
+                }
             }
             break;
         case TOKEN_MEM:

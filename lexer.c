@@ -102,6 +102,12 @@ Token nextToken(Lexer* lexer) {
     switch (c) {
         // Add cases for different characters
         // Example for 'hello;'
+        case 'a':
+            if (strncmp(lexer->current, "sk", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_ASK, TOKEN_ASK);
+            }
+            break;
         case 'm':
             if (strncmp(lexer->current, "odule", 5) == 0) {
                 lexer->current += 5;

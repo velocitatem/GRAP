@@ -44,6 +44,7 @@ typedef enum ActionTokens {
     TOKEN_SAVE,
     TOKEN_GET,
     TOKEN_SAY,
+    TOKEN_ASK,
     TOKEN_DECLARE,
     TOKEN_EXPORT,
     TOKEN_CALL,
