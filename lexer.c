@@ -65,6 +65,11 @@ void skipWhitespace(Lexer* lexer) {
 
 static Token* makeToken(Lexer* lexer, TokenType tokenType, CoreTokens coreToken, ActionTokens customToken) {
     Token* token = malloc(sizeof(Token));
+    if (coreToken == TOKEN_EOF && lexer->current == lexer->start) {
+        token->isFinal = true;
+    } else {
+        token->isFinal = false;
+    }
     token->type = tokenType;
     switch (tokenType) {
         case TOKEN_CORE:
@@ -116,6 +121,10 @@ Token nextToken(Lexer* lexer) {
             if (strncmp(lexer->current, "em", 2) == 0) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_MODULE, TOKEN_MEM, TOKEN_MEM);
+            }
+            if (strncmp(lexer->current, "ath", 3) == 0) {
+                lexer->current += 3;
+                return *makeToken(lexer, TOKEN_MODULE, TOKEN_MATH, TOKEN_MATH);
             }
             break;
         case '|':
@@ -170,6 +179,11 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 5;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_EXPORT, TOKEN_EXPORT);
             }
+            // eval
+            if (strncmp(lexer->current, "val", 3) == 0) {
+                lexer->current += 3;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_EVAL, TOKEN_EVAL);
+            }
             break;
         case 'c':
             if (strncmp(lexer->current, "all", 3) == 0) {
@@ -189,6 +203,7 @@ Token nextToken(Lexer* lexer) {
             }
             break;
 
+
         case '>':
             return *makeToken(lexer, TOKEN_ACTION, TOKEN_RIGHTSHIFT, TOKEN_RIGHTSHIFT);
             break;
@@ -196,6 +211,38 @@ Token nextToken(Lexer* lexer) {
             return *makeToken(lexer, TOKEN_ACTION, TOKEN_LEFTSHIFT, TOKEN_LEFTSHIFT);
             break;
 
+        // CUSTOM GRAPHS AND NODES N_{custom node name}
+        case 'N':
+            if (strncmp(lexer->current, "_", 1) == 0) {
+                lexer->current++;
+                while (isalnum(peek(lexer)) && !isAtEnd(lexer)) advance(lexer);
+                return *makeToken(lexer, TOKEN_CORE, TOKEN_CUSTOM_NODE, TOKEN_CUSTOM_NODE);
+            }
+            break;
+        case 'A': // A_{custom action name}
+            if (strncmp(lexer->current, "_", 1) == 0) {
+                lexer->current++;
+                while (isalnum(peek(lexer)) && !isAtEnd(lexer)) advance(lexer);
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_CUSTOM_ACTION, TOKEN_CUSTOM_ACTION);
+            }
+            break;
+
+        // MATH TOKENS
+        case '+':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_ADDITION, TOKEN_ADDITION);
+            break;
+        case '-':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_SUBTRACTION, TOKEN_SUBTRACTION);
+            break;
+        case '*':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_MULTIPLICATION, TOKEN_MULTIPLICATION);
+            break;
+        case '/':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_DIVISION, TOKEN_DIVISION);
+            break;
+        case '%':
+            return *makeToken(lexer, TOKEN_ACTION, TOKEN_MODULUS, TOKEN_MODULUS);
+            break;
 
 
         // -------------- CORE TOKENS ----------------

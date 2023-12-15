@@ -148,6 +148,59 @@ handleCore
     return result;
 }
 
+int evaluateMath(Node * child)
+{
+    // both are a type of TOKEN_CUSTOM_NODE and start with an N_
+    if
+    (child->edges[0].from->token.moduleToken == TOKEN_CUSTOM_NODE
+    && child->edges[0].to->token.moduleToken== TOKEN_CUSTOM_NODE
+    )
+    {
+        char * a = child->token.value; // N_{NUMBER}
+        char * b = child->edges[0].to->token.value; // N_{NUMBER}
+        a = (a + 2); // remove N_
+        b = (b + 2); // remove N_
+        switch (child->edges[0].action.actionToken)
+        {
+            case TOKEN_ADDITION:
+                return atoi(a) + atoi(b);
+            case TOKEN_SUBTRACTION:
+                return atoi(a) - atoi(b);
+            case TOKEN_MULTIPLICATION:
+                return atoi(a) * atoi(b);
+            case TOKEN_DIVISION:
+                return atoi(a) / atoi(b);
+            case TOKEN_MODULUS:
+                return atoi(a) % atoi(b);
+            default:
+                return 0;
+                break;
+        }
+    }
+    else
+    {
+        // if not base case, then we have a subgraph
+        // recursive call
+        int a = evaluateMath(child->edges[0].to);
+        int b = evaluateMath(child->edges[1].to);
+        switch (child->edges[0].action.actionToken)
+        {
+            case TOKEN_ADDITION:
+                return a + b;
+            case TOKEN_SUBTRACTION:
+                return a - b;
+            case TOKEN_MULTIPLICATION:
+                return a * b;
+            case TOKEN_DIVISION:
+                return a / b;
+            case TOKEN_MODULUS:
+                return a % b;
+            default:
+                return 0;
+                break;
+        }
+    }
+}
 
 char*
 handleModule
@@ -157,6 +210,25 @@ handleModule
     switch
     (root->token.moduleToken)
     {
+        case TOKEN_MATH:
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
+                if (root->edges[i].action.actionToken == TOKEN_EVAL)
+                {
+                    Node *child = root->edges[i].to;
+                    // regularly we would call main recursively
+                    // but in this case we want to evaluate the expression
+                    // (NUMBER | +/-%*| NUMBER) where nubmer can be a subgraph
+                    int result = evaluateMath(child->edges[0].to);
+                    char *resultString = malloc(sizeof(char) * 100);
+                    sprintf(resultString, "\"%d\"", result);
+                    // HACK: TODO change all return types to a custom type
+                    // that is a union of various types
+                    return resultString;
+                }
+            }
+            break;
         case TOKEN_BITS:
             for
             (int i = 0; i < root->edgeCount; i++)
@@ -222,7 +294,20 @@ handleModule
                 if
                 (edge.action.actionToken == TOKEN_SAY)
                 {
-                    printf("%s\n", child->token.value);
+                    char *say = child->token.value;
+                    // clear literal \" if present
+                    if
+                    (say[0] == '\"')
+                    {
+                        say = say + 1;
+                    }
+                    if
+                    (say[strlen(say) - 1] == '\"')
+                    {
+                        say[strlen(say) - 1] = '\0';
+                    }
+
+                    printf("%s\n", say);
                 }
                 if
                 (edge.action.actionToken == TOKEN_ASK)
@@ -243,11 +328,15 @@ handleModule
                 if
                 (edge.action.actionToken == TOKEN_SAVE)
                 {
-                    // todo wrap in try
                     Node *child = edge.to;
                     Edge var = child->edges[0].to->edges[0];
                     char *varname = var.action.value;
                     char *varvalue = var.to->token.value;
+                    // maybe var value is a subgraph
+                    if (var.to->token.type == TOKEN_CORE
+                        && var.to->token.coreToken == TOKEN_MAIN) {
+                        varvalue = interpretGraph(var.to);
+                    }
                     setMemory(varname, varvalue);
                     return NULL;
                 }
