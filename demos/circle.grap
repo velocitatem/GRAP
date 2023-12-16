@@ -1,0 +1,22 @@
+mem | save | (int | "radius" | (io | ask | "What is the radius of the circle?"))
+mem | save | (var | "pi" | "3.14159")
+str | concadd | (mem | get | "radius")
+str | concadd | " "
+str | concadd | (mem | get | "radius")
+mem | save | (int | "radius_squared" | (math | mul | (str | concat | "")))
+str | concadd | (mem | get | "pi")
+str | concadd | " "
+str | concadd | (mem | get | "radius_squared")
+mem | save | (int | "area" | (math | mul | (str | concat | "")))
+str | concadd | "2"
+str | concadd | " "
+str | concadd | (mem | get | "pi")
+mem | save | (int | "two_pi" | (math | mul | (str | concat | "")))
+str | concadd | (mem | get | "two_pi")
+str | concadd | " "
+str | concadd | (mem | get | "radius")
+mem | save | (int | "perimeter" | (math | mul | (str | concat | "")))
+io | say | "The area of the circle is:"
+io | say | (mem | get | "area")
+io | say | "The perimeter of the circle is:"
+io | say | (mem | get | "perimeter")
