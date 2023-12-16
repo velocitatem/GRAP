@@ -1,2 +1,2 @@
-mem | save | (var | "pi" | "3.14" )
+mem | save | (var | "pi" | "3.14")
 io | say | (mem | get | "pi")
