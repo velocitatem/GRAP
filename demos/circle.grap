@@ -16,7 +16,11 @@ str | concadd | (mem | get | "two_pi")
 str | concadd | " "
 str | concadd | (mem | get | "radius")
 mem | save | (int | "perimeter" | (math | mul | (str | concat | "")))
-io | say | "The area of the circle is:"
-io | say | (mem | get | "area")
-io | say | "The perimeter of the circle is:"
-io | say | (mem | get | "perimeter")
+
+str | concadd | "The area of the circle is: "
+str | concadd | (mem | get | "area")
+
+str | concadd | "\nThe perimeter of the circle is: "
+str | concadd | (mem | get | "perimeter")
+
+io | say | (str | concat | "")

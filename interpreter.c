@@ -451,7 +451,13 @@ handleModule
                     if
                     (subgraphResult != NULL)
                     {
-                        printf("%s\n", subgraphResult);
+                        // \n split
+                        char *line = strtok(subgraphResult, "\\n");
+                        while (line != NULL)
+                        {
+                            printf("%s\n", line);
+                            line = strtok(NULL, "\\n");
+                        }
                     }
                     break;
                 }
@@ -471,7 +477,18 @@ handleModule
                         say[strlen(say) - 1] = '\0';
                     }
 
-                    printf("%s\n", say);
+                    // check if we have a newline inside the string
+                    // if so, print each line separately
+                    // split by \n
+                    char *line = strtok(say, "\\n");
+                    while (line != NULL)
+                    {
+                        printf("%s\n", line);
+                        line = strtok(NULL, "\\n");
+                    }
+
+
+                    printf("%s", say);
                 }
                 if
                 (edge.action.actionToken == TOKEN_ASK)
