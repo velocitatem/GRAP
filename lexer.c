@@ -112,6 +112,10 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_ASK, TOKEN_ASK);
             }
+            if (strncmp(lexer->current, "dd", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_ADDITION, TOKEN_ADDITION);
+            }
             break;
         case 'm':
             if (strncmp(lexer->current, "odule", 5) == 0) {
@@ -125,6 +129,14 @@ Token nextToken(Lexer* lexer) {
             if (strncmp(lexer->current, "ath", 3) == 0) {
                 lexer->current += 3;
                 return *makeToken(lexer, TOKEN_MODULE, TOKEN_MATH, TOKEN_MATH);
+            }
+            if (strncmp(lexer->current, "ul", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_MULTIPLICATION, TOKEN_MULTIPLICATION);
+            }
+            if (strncmp(lexer->current, "od", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_MODULUS, TOKEN_MODULUS);
             }
             break;
         case '|':
@@ -140,6 +152,10 @@ Token nextToken(Lexer* lexer) {
             if (strncmp(lexer->current, "ay", 2) == 0) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_SAY, TOKEN_SAY);
+            }
+            if (strncmp(lexer->current, "ub", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_SUBTRACTION, TOKEN_SUBTRACTION);
             }
             break;
         case 'v':
@@ -173,6 +189,10 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 6;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_DECLARE, TOKEN_DECLARE);
             }
+            if (strncmp(lexer->current, "iv", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_DIVISION, TOKEN_DIVISION);
+            }
             break;
         case 'e':
             if (strncmp(lexer->current, "xport", 5) == 0) {
@@ -200,6 +220,12 @@ Token nextToken(Lexer* lexer) {
             if (strncmp(lexer->current, "its", 3) == 0) {
                 lexer->current += 3;
                 return *makeToken(lexer, TOKEN_MODULE, TOKEN_BITS, TOKEN_BITS);
+            }
+            break;
+        case 'p':
+            if (strncmp(lexer->current, "ow", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_POWER, TOKEN_POWER);
             }
             break;
 

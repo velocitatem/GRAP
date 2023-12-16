@@ -49,6 +49,7 @@ typedef enum ActionTokens {
     TOKEN_MULTIPLICATION,
     TOKEN_DIVISION,
     TOKEN_MODULUS,
+    TOKEN_POWER,
     TOKEN_LINK,
     TOKEN_SAVE,
     TOKEN_GET,

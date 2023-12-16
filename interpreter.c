@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 
 char * handleCore(Node *root);
@@ -214,7 +215,65 @@ handleModule
             for
             (int i = 0; i < root->edgeCount; i++)
             {
-                if (root->edges[i].action.actionToken == TOKEN_EVAL)
+                Edge edge = root->edges[i];
+                Node *child = edge.to;
+
+                //Parse arguments
+                char * c = child->token.value;
+                //strip "
+                c += 1;
+                c[strlen(c)-1] = '\0';
+
+                //parse
+                c = strtok(c, " ");
+                float a, b;
+                for(int j = 0; j < 2 && c; j++){
+                    char * ptr;
+                    float n = strtof(c, &ptr);
+                    if(strcmp(ptr, "") != 0){
+                        if(strcmp(c, ptr) != 0){
+                            printf("Syntax error.\n");
+                            return 0;
+                        }
+
+                        //get value from memory
+                        char * ptr2;
+                        char * varname = (char*)malloc(100 * sizeof(char));
+                        sprintf(varname, "\"%s\"", ptr);
+                        char *d = getMemory(varname);
+
+                        if(d == NULL){
+                            printf("Unknown variable %s.\n", varname);
+                            free(varname);
+                            return 0;
+                        }
+
+                        free(varname);
+
+                        //copy variable
+                        char * m = malloc(strlen(d) + 1);
+                        strcpy(m, d);
+
+                        //strip "
+                        m += 1;
+                        m[strlen(m)-1] = '\0';
+
+                        n = strtof(m, &ptr2);
+
+                        if(strcmp(ptr2, "") != 0){
+                            printf("Syntax error.\n");
+                            free(m);
+                            return 0;
+                        }
+                    }
+                    if (j==0) a = n;
+                    else b = n;
+                    c = strtok(NULL, " ");
+                }
+                c = calloc(100, sizeof (char));
+
+
+                if (edge.action.actionToken == TOKEN_EVAL)
                 {
                     Node *child = root->edges[i].to;
                     // regularly we would call main recursively
@@ -226,6 +285,29 @@ handleModule
                     // HACK: TODO change all return types to a custom type
                     // that is a union of various types
                     return resultString;
+                }
+                switch
+                (edge.action.actionToken)
+                {
+                    case TOKEN_ADDITION:
+                        sprintf(c, "%g", a + b);
+                        return c;
+                    case TOKEN_SUBTRACTION:
+                        sprintf(c, "%g", a - b);
+                        return c;
+                    case TOKEN_MULTIPLICATION:
+                        sprintf(c, "%g", a * b);
+                        return c;
+                    case TOKEN_DIVISION:
+                        sprintf(c, "%g", a / b);
+                        return c;
+                    case TOKEN_MODULUS:
+                        sprintf(c, "%g", (float)((int)a % (int)b));
+                        return c;
+                    case TOKEN_POWER:
+                        sprintf(c, "%g", pow(a,b));
+                        return c;
+
                 }
             }
             break;
@@ -347,6 +429,7 @@ handleModule
                     Node *child = edge.to;
                     char *varname = child->token.value;
                     char *varvalue = getMemory(varname);
+                    printf("Getting %s from memory: %s\n", varname, varvalue);
                     return varvalue;
                 }
             }
