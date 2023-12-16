@@ -125,6 +125,71 @@ addModuleToRegistry
 // ------------------ MODULES ------------------
 
 
+// ------------------ STR Concat stack ------------------
+typedef struct
+{
+    char *value;
+    int index;
+}
+ConcatStack;
+
+ConcatStack concatStack[100];
+int concatStackIndex = 0;
+
+void
+pushConcatStack
+(char *value)
+{
+    if
+    (concatStackIndex >= 100)
+    {
+        printf("Concat stack is full.\n");
+        return;
+    }
+    concatStack[concatStackIndex].value = value;
+    concatStack[concatStackIndex].index = 0;
+    concatStackIndex++;
+}
+
+char *
+popConcatStack
+()
+{
+    if
+    (concatStackIndex <= 0)
+    {
+        printf("Concat stack is empty.\n");
+        return NULL;
+    }
+    concatStackIndex--;
+    return concatStack[concatStackIndex].value;
+}
+
+char * // return concatenated stack
+concatStackToString
+()
+{
+    char *result = malloc(sizeof(char) * 100);
+    strcpy(result, "");
+    for
+    (int i = 0; i < concatStackIndex; i++)
+    {
+        strcat(result, concatStack[i].value);
+    }
+    // reset stack
+    concatStackIndex = 0;
+    for
+    (int i = 0; i < 100; i++)
+    {
+        concatStack[i].value = NULL;
+        concatStack[i].index = 0;
+    }
+
+    return result;
+}
+
+
+
 
 char*
 handleCore
@@ -219,10 +284,27 @@ handleModule
                 Node *child = edge.to;
 
                 //Parse arguments
-                char * c = child->token.value;
-                //strip "
-                c += 1;
-                c[strlen(c)-1] = '\0';
+                char * c;
+                // resolve possible subgraph
+                if
+                (child->token.type == TOKEN_CORE
+                && child->token.coreToken == TOKEN_MAIN)
+                {
+                    c = interpretGraph(child);
+                }
+                else
+                {
+                    c = child->token.value;
+                }
+                //strip " if present
+                if (c[0] == '\"')
+                {
+                    c += 1;
+                }
+                if (c[strlen(c) - 1] == '\"')
+                {
+                    c[strlen(c) - 1] = '\0';
+                }
 
                 //parse
                 c = strtok(c, " ");
@@ -429,7 +511,6 @@ handleModule
                     Node *child = edge.to;
                     char *varname = child->token.value;
                     char *varvalue = getMemory(varname);
-                    printf("Getting %s from memory: %s\n", varname, varvalue);
                     return varvalue;
                 }
             }
@@ -490,6 +571,53 @@ handleModule
                 {
                     Node *export = &module->exports[j];
                     interpretGraph(export);
+                }
+            }
+            break;
+
+        case TOKEN_STR:
+            for
+            (int i = 0; i < root->edgeCount; i++)
+            {
+                Edge edge = root->edges[i];
+                Node *child = edge.to;
+                // handle cases when we have a subgraph
+                // concat and concadd
+                char *subgraphResult;
+                if
+                (child->token.type == TOKEN_CORE
+                && child->token.coreToken == TOKEN_MAIN)
+                {
+                     subgraphResult= interpretGraph(child);
+                }
+                else
+                {
+                    subgraphResult = child->token.value;
+                }
+                if
+                (edge.action.actionToken == TOKEN_CONCADD)
+                {
+                    // add to stack
+                    // trim " at the beginning and end
+                    if
+                    (subgraphResult[0] == '\"')
+                    {
+                        subgraphResult = subgraphResult + 1;
+                    }
+                    if
+                    (subgraphResult[strlen(subgraphResult) - 1] == '\"')
+                    {
+                        subgraphResult[strlen(subgraphResult) - 1] = '\0';
+                    }
+                    pushConcatStack(subgraphResult);
+                }
+                if
+                (edge.action.actionToken == TOKEN_CONCAT)
+                {
+                    // pop from stack
+                    char *result = concatStackToString();
+                    // clear stack
+                    return result;
                 }
             }
             break;

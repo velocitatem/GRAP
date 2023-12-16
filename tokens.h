@@ -29,6 +29,7 @@ typedef enum CoreTokens {
 
 typedef enum ModuleTokens {
     TOKEN_CUSTOM_NODE,
+    TOKEN_STR,
     TOKEN_MATH,
     TOKEN_MEM,
     TOKEN_IO,
@@ -42,6 +43,8 @@ typedef enum ModuleTokens {
 } ModuleTokens;
 
 typedef enum ActionTokens {
+    TOKEN_CONCADD,
+    TOKEN_CONCAT,
     TOKEN_EVAL,
     TOKEN_CUSTOM_ACTION,
     TOKEN_ADDITION,

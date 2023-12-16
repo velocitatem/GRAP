@@ -19,3 +19,5 @@ add_executable(GRAP
         cli.c
         cli.h
 )
+
+target_link_libraries(GRAP m)

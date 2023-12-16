@@ -157,6 +157,10 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 2;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_SUBTRACTION, TOKEN_SUBTRACTION);
             }
+            if (strncmp(lexer->current, "tr", 2) == 0) {
+                lexer->current += 2;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_STR, TOKEN_STR);
+            }
             break;
         case 'v':
             if (strncmp(lexer->current, "ar", 2) == 0) {
@@ -210,6 +214,17 @@ Token nextToken(Lexer* lexer) {
                 lexer->current += 3;
                 return *makeToken(lexer, TOKEN_ACTION, TOKEN_CALL, TOKEN_CALL);
             }
+            // concadd
+            if (strncmp(lexer->current, "oncadd", 6) == 0) {
+                lexer->current += 6;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_CONCADD, TOKEN_CONCADD);
+            }
+            // concat
+            if (strncmp(lexer->current, "oncat", 5) == 0) {
+                lexer->current += 5;
+                return *makeToken(lexer, TOKEN_ACTION, TOKEN_CONCAT, TOKEN_CONCAT);
+            }
+
             break;
 
         case 'b': // binary

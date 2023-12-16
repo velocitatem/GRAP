@@ -1,0 +1,24 @@
+mem | save | (var | "a" |
+    (io | ask | "Enter a number: ")
+)
+str | concadd | (mem | get | "a")
+mem | save | (var | "b" |
+    (io | ask | "Enter a number: ")
+)
+str | concadd | " "
+str | concadd | (mem | get | "b")
+
+
+mem | save | (int | "S" | (
+    math | mul | (str | concat | "")
+))
+str | concadd | "The product of "
+str | concadd | (mem | get | "a")
+str | concadd | " and "
+str | concadd | (mem | get | "b")
+str | concadd | " is "
+str | concadd | (mem | get | "S")
+mem | save | (var | "str" |
+    (str | concat | "")
+)
+io | say | (mem | get | "str")

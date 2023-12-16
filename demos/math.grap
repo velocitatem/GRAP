@@ -1,10 +1,7 @@
 mem | save | (int | "s1" | "10")
 mem | save | (int | "s2" | "10")
 mem | save | (int | "S" | (
-    math | eval | (
-            N_4 | * | N_10
-            )
-        )
-)
+    math | mul | "10 20"
+))
 io | say | "The computed product is:"
 io | say | (mem | get | "S")
