@@ -25,8 +25,8 @@ jobs:
         cd build
         make
 
-    - name: Upload Windows Executable
+    - name: Upload Windows Executables
       uses: actions/upload-artifact@v2
       with:
-        name: windows-executable
-        path: build/your_executable.exe  # Replace this with the path to your actual executable
+        name: windows-executables
+        path: build/*.exe
