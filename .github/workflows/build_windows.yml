@@ -1,0 +1,32 @@
+name: Cross-Compile Windows Executable on Linux
+
+on: [push, pull_request]
+
+jobs:
+  build-windows-on-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install MinGW-w64
+      run: sudo apt-get update && sudo apt-get install -y mingw-w64
+
+    - name: Create Build Directory
+      run: mkdir build
+
+    - name: Configure CMake for Cross-Compilation
+      run: |
+        cd build
+        cmake -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ ..
+
+    - name: Build with Make
+      run: |
+        cd build
+        make
+
+    - name: Upload Windows Executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-executable
+        path: build/your_executable.exe  # Replace this with the path to your actual executable
