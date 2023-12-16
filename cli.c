@@ -29,7 +29,7 @@ void handleCLI(int argc, char **argv) {
             //printf("Token: %s\n", token.value);
             tokens[tokenCount] = token;
             tokenCount++;
-        } while (token.coreToken != TOKEN_EOF);
+        } while (token.isFinal == false);
         Node *rt = parseTokensIntoGraph(tokens, tokenCount - 1);
         interpretGraph(rt);
     }
