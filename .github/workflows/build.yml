@@ -1,0 +1,54 @@
+name: Build Executable
+
+on: [push, pull_request]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Build Directory
+      run: mkdir -p build
+
+    - name: Run CMake
+      run: |
+        cd build
+        cmake ..
+
+    - name: Build
+      run: |
+        cd build
+        make
+
+    - name: Upload Linux Executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: linux-executable
+        path: build/my_executable  # Replace with your actual executable path
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Create Build Directory
+      run: mkdir build
+
+    - name: Run CMake
+      run: |
+        cd build
+        cmake -G "Visual Studio 16 2019" -A x64 ..
+
+    - name: Build
+      run: |
+        cd build
+        cmake --build . --config Release
+
+    - name: Upload Windows Executable
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-executable
+        path: build/Release/my_executable.exe  # Replace with your actual executable path
