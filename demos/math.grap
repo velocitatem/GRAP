@@ -1,7 +1,6 @@
-mem | save | (int | "s1" | "10")
-mem | save | (int | "s2" | "10")
 mem | save | (int | "S" | (
     math | mul | "10 20"
 ))
-io | say | "The computed product is:"
-io | say | (mem | get | "S")
+str | concadd | "The product of 10 & 20 is: "
+str | concadd | (mem | get | "S")
+io | say | (str | concat | "")

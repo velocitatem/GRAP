@@ -31,3 +31,7 @@ This program will print `50` to the console and save `5` to memory.
 
 ## Error handling
 Please note, if the mathematical operation cannot be completed for whatever reason, including references to unassigned variables or incorrect syntax, the functional will terminate and return `0`.
+
+
+# Example Code
++ [Basic Math](../demos/math.grap)
