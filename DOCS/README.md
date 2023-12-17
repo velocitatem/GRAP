@@ -4,6 +4,8 @@ Grap is a simple, custom programming language designed for creating and manipula
 
 ## Installation
 
+_we suggest using the bin version of grap, but if you want to build it yourself, follow the instructions below_
+
 To install the Grap interpreter, clone the repository and build the project using CMake:
 
 ```bash
@@ -16,6 +18,16 @@ make
 ```
 
 This will generate an executable in the `build` directory.
+
+### Binaries (Recommended)
+
+Requires GLIBC_2.34 or higher.
+
+1. Download the latest release from [here](https://github.com/velocitatem/GRAP/releases)
+2. Extract the zip file
+3. Run the executable
+4. Enjoy!
+5. (Optional) Add the executable to your PATH
 
 ## Usage
 
@@ -44,8 +56,10 @@ Grap has several built-in modules:
 
 - [`io`](./io.md): Used for input and output operations.
 - [`mem`](./mem.md): Used for saving and retrieving values in memory.
-- `math`: Used for mathematical operations.
-- `bits`: Used for bitwise operations.
+- [`math`](./math.md): Used for mathematical operations.
+- [`bits`](./bits.md): Used for bitwise operations.
+- [`module`](./module.md): Used for creating and using modules.
+- [`str`](./str.md): Used for string operations.
 
 Each module has its own set of actions and parameters.
 

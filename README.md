@@ -3,6 +3,8 @@
 ## 🚀 Overview
 GRAP is a 🎉 simple, yet powerful programming language designed to make programming more intuitive and accessible. It is built using C and Python, and it allows you to write programs in a graph-like structure, making it easier to visualize the flow of data and control.
 
+You can find a demo at this [link](https://g-rap.netlify.app/graph).
+
 ## 🌟 Key Features
 - **📊 Graph Structure**: Write your programs in a graph-like structure, making it easier to visualize the flow of data and control.
 - **💾 Memory Management**: Graph provides a simple memory structure for storing and retrieving variables.
@@ -28,7 +30,7 @@ This program saves the values "3.14" and "hello" to the variables "pi" and "gree
 To get started with Graph, you'll need to clone the repository and build the interpreter. Detailed instructions for this process can be found in the `INSTALL.md` file.
 
 ## 📚 Documentation
-For more detailed information about the language, including its syntax and built-in functions, please refer to the `DOCS.md` file.
+For more detailed information about the language, including its syntax and built-in functions, please refer to the [DOCS](./DOCS) directory.
 
 ### More Examples
 
