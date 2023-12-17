@@ -16,11 +16,8 @@ str | concadd | (mem | get | "two_pi")
 str | concadd | " "
 str | concadd | (mem | get | "radius")
 mem | save | (int | "perimeter" | (math | mul | (str | concat | "")))
-
 str | concadd | "The area of the circle is: "
 str | concadd | (mem | get | "area")
-
-str | concadd | "\nThe perimeter of the circle is: "
+str | concadd | "<n>The perimeter of the circle is: "
 str | concadd | (mem | get | "perimeter")
-
 io | say | (str | concat | "")
