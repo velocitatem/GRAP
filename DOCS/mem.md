@@ -32,3 +32,9 @@ io | say | ( mem | get | "num1")
 ```
 
 This program will print `2` to the console.
+
+# Example Code
++ [Basic Memory](../demos/helloworld.grap)
++ [Basic Math](../demos/math.grap)
++ [Basic Bits](../demos/bits.grap)
++ [Input](../demos/input.grap)
