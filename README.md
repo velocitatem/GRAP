@@ -1,9 +1,11 @@
 ![Black And Purple Modern Gaming Youtube Banner](https://github.com/velocitatem/GRAP/assets/60182044/1727c3f9-33c2-4807-8cd5-4b1ecb19719e)
 
 ## 🚀 Overview
-GRAP is a 🎉 simple, yet powerful programming language designed to make programming more intuitive and accessible. It is built using C and Python, and it allows you to write programs in a graph-like structure, making it easier to visualize the flow of data and control.
+GRAP is a 🎉 simple, yet powerful programming language designed to make programming more intuitive and accessible. It is built using C, and it allows you to write programs in a graph-like structure, making it easier to visualize the flow of data and control.
 
-You can find a demo at this [link](https://g-rap.netlify.app/graph).
+You can find a demo at this [link](https://g-rap.netlify.app/graph). And please checkout out colab environment:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1-FQg4OTTn3_b1ZjC2eYGx7Luja7K2u8e?usp=sharing)
+
 
 ## 🌟 Key Features
 - **📊 Graph Structure**: Write your programs in a graph-like structure, making it easier to visualize the flow of data and control.
