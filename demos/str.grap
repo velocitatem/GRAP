@@ -14,7 +14,7 @@ mem | save | (int | "S" | (
 ))
 str | concadd | "The product of "
 str | concadd | (mem | get | "a")
-str | concadd | " and "
+str | concadd | " & "
 str | concadd | (mem | get | "b")
 str | concadd | " is "
 str | concadd | (mem | get | "S")
